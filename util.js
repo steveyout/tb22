@@ -164,7 +164,7 @@ function confirmOrder(order, connection, callback, client) {
                                             };
                                             var transactionJson = JSON.stringify(transaction);
                                             newTransactionOccured(user, config.NEW_PAYMENT, transactionJson, connection, function(response) {});
-                                            payReferralBonus(user, connection, client);
+                                            payReferralBonus(user, amount, 1, connection, client);
                                         } else {
                                             callback({ message: i18n.__('You order was rejected. Payment made did not match order.'), user: user });
                                         }
@@ -383,7 +383,7 @@ function getTransaction(user, connection, callback) {
     });
 }
 
-function payReferralBonus(user, connection, client) {
+function payReferralBonus(user, amount, generation, connection, client) {
     isNewUser(user, function(response) {
         if (response !== true) {
             var me = response[0];
@@ -391,7 +391,22 @@ function payReferralBonus(user, connection, client) {
             if (nodeUtil.isNullOrUndefined(referral)) {
                 return;
             } else {
-                client.getExchangeRates({ 'currency': 'BTC' }, function(err, rates) {
+                if (generation === 1) {
+                    ref_amount = amount * 0.08;
+                } else if (generation === 2) {
+                    ref_amount = amount * 0.04;
+                } else if (generation === 3) {
+                    ref_amount = amount * 0.02;
+                } else {
+                    return;
+                }
+                increaseDailyBalance(connection, referral, ref_amount, function(response) {
+                    if (response === true) {
+                        notifyDailyBalanceHandlers(ref_amount, referral);
+                        payReferralBonus(referral, amount, (generation + 1), connection, client);
+                    }
+                });
+                /**client.getExchangeRates({ 'currency': 'BTC' }, function(err, rates) {
                     if (err) {
                         return;
                     } else {
@@ -403,7 +418,7 @@ function payReferralBonus(user, connection, client) {
                             }
                         })
                     }
-                });
+                });**/
             }
         }
     }, connection, null);
@@ -446,6 +461,38 @@ function getLanguage(connection, chatId, callback) {
     });
 }
 
+function myTeam(connection, chatId, callback) {
+    var sql = "select `chatId` from `users` where `referred_by` = '" + chatId + "'";
+    connection.query(sql, function(err, results) {
+        if (err) {
+            console.log(err);
+            callback(0, 0);
+        }
+        if (results.length > 0) {
+            var active = [];
+            var inactive = [];
+            forEach(function(value, index, results) {
+                var sql = "select `status` from `orders` where `user` = '" + value + "'"
+                connection.query(sql, function(err, response) {
+                    if (err) {
+                        console.log(err);
+                        inactive.push(1);
+                    } else {
+                        if (response === config.CONFIRMED) {
+                            active.push(1);
+                        } else {
+                            inactive.push(1);
+                        }
+                    }
+                });
+                callback(active.length, inactive.length);
+            });
+        } else {
+            callback(0, 0);
+        }
+    });
+}
+
 function Util() {
     EventEmitter.call(this);
     this.isNewUser = isNewUser;
@@ -461,6 +508,7 @@ function Util() {
     this.deductDailyMax = deductDailyMax;
     this.getTransaction = getTransaction;
     this.getLanguage = getLanguage;
+    this.myTeam = myTeam;
 }
 
 nodeUtil.inherits(Util, EventEmitter);

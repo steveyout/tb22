@@ -74,6 +74,7 @@ function normalKeyboard(chatId, message) {
                 var language = i18n.__("Language") + " \uD83C\uDF0D";
                 var help = i18n.__("Help");
                 var support = i18n.__("Support") + " \u2709";
+                var team = i18n.__("My Team") + " U+26BD";
                 bot.sendMessage(chatId, message, {
                     "reply_markup": {
                         "keyboard": [
@@ -81,7 +82,7 @@ function normalKeyboard(chatId, message) {
                             [invest, withdraw],
                             [transaction, order],
                             [referral, language],
-                            [support]
+                            [support, team]
                         ]
                     }
                 });
@@ -95,6 +96,7 @@ function normalKeyboard(chatId, message) {
                 var language = i18n.__("Language") + " \uD83C\uDF0D";
                 var help = i18n.__("Help");
                 var support = i18n.__("Support") + " \u2709";
+                var team = i18n.__("My Team") + " U+26BD";
                 bot.sendMessage(chatId, message, {
                     "reply_markup": {
                         "keyboard": [
@@ -102,7 +104,7 @@ function normalKeyboard(chatId, message) {
                             [invest, withdraw],
                             [transaction, order],
                             [referral, language],
-                            [support]
+                            [support, team]
                         ]
                     }
                 });
@@ -689,6 +691,24 @@ bot.on('message', (msg) => {
             var user = msg.chat.id;
             var message = i18n.__("Write to our 24/7 support mail") + " " + config.EMAIL;
             normalKeyboard(user, message);
+        }
+    });
+});
+
+bot.on('message', (msg) => {
+    util.getLanguage(connection, msg.chat.id, function(language) {
+        if (language !== true) {
+            i18n.setLocale(language);
+        } else {
+            i18n.setLocale('en');
+        }
+        if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("my team"))) {
+            var user = msg.chat.id;
+            util.myTeam(connection, user, function(active, inactive) {
+                var message = "You have " + active + " active referral and " + inactive + " inactive referral";
+                normalKeyboard(user, message);
+            });
+
         }
     });
 });
