@@ -23,7 +23,7 @@ var client = new Client({
 
 const bot = new TelegramBot(token, { polling: true });
 var chatId = null;
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 3000;
 
 i18n.configure({
     locales: ['en', 'de', 'es', 'fr'],
@@ -122,7 +122,16 @@ util.on(config.BALANCE_CHANGED, function(balance, user) {
         } else {
             i18n.setLocale('en');
         }
-        normalKeyboard(user, i18n.__("Your balance increments daily by 6% for the next 30 days"));
+        util.getOrder(connection, user, function(response) {
+            if (response !== true) {
+                if (response === 0.02 || response === 0.05 || response === 0.1 || response === 0.5) {
+                    normalKeyboard(user, i18n.__("Your balance increments daily by 4% for the next 40 days"));
+                } else {
+                    normalKeyboard(user, i18n.__("Your balance increments daily by 6% for the next 40 days"));
+                }
+            }
+        });
+
     });
 
 });
@@ -282,8 +291,8 @@ bot.on('message', (msg) => {
             i18n.setLocale('en');
         }
         if (i18n.__(msg.text).trim().indexOf(i18n.__("Invest")) === 0 || i18n.__(msg.text).trim().indexOf(i18n.__("invest")) === 0) {
-            bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
-            return;
+            // bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
+            //return;
             util.existingOrder(msg.chat.id, connection, function(response) {
                 if (response === false) {
                     init();

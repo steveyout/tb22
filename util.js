@@ -194,7 +194,11 @@ function updateOrderStatus(uuid, connection, callback) {
 }
 
 function updateBalance(user, status, amount, connection, callback) {
-    amount = 1.8 * amount;
+    if (amount === 0.02 || amount === 0.05 || amount === 0.1 || amount === 0.5) {
+        amount = 1.6 * amount;
+    } else {
+        amount = 2.4 * amount;
+    }
     getBalance(user, connection, function(response) {
         if (response !== true) {
             amount = amount + response;
@@ -471,24 +475,42 @@ function myTeam(connection, chatId, callback) {
         if (results.length > 0) {
             var active = [];
             var inactive = [];
-            results.forEach(function(value, index, results) {
-                var sql = "select `status` from `orders` where `user` = '" + value + "'"
+            results.forEach(function(value, index, resultsArr) {
+                var user = value.chatId;
+                var sql = "select `status` from `orders` where `user` = '" + user + "'"
                 connection.query(sql, function(err, response) {
                     if (err) {
                         console.log(err);
                         inactive.push(1);
                     } else {
-                        if (response === config.CONFIRMED) {
+                        if (response[0].status === config.CONFIRMED) {
                             active.push(1);
                         } else {
                             inactive.push(1);
                         }
                     }
+                    if (index === resultsArr.length - 1) {
+                        callback(active.length, inactive.length);
+                    }
                 });
-                callback(active.length, inactive.length);
             });
         } else {
             callback(0, 0);
+        }
+    });
+}
+
+function getOrder(connection, chatId, callback) {
+    var sql = "select `amount` from `orders` where `user` = '" + chatId + "'";
+    connection.query(sql, function(err, results) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        if (results.length > 0) {
+            callback(results[0].amount);
+        } else {
+            callback(true);
         }
     });
 }
@@ -509,6 +531,7 @@ function Util() {
     this.getTransaction = getTransaction;
     this.getLanguage = getLanguage;
     this.myTeam = myTeam;
+    this.getOrder = getOrder;
 }
 
 nodeUtil.inherits(Util, EventEmitter);
