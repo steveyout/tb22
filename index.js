@@ -531,8 +531,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).indexOf(i18n.__("withdraw")) === 0) {
             var user = msg.chat.id;
-            bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
-            return;
+            //  bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
+            //return;
             util.getAccount(user, connection, function(account) {
                 if (account === true) {
                     var message = i18n.__("Your main balance is low. Please invest.");
