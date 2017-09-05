@@ -74,7 +74,7 @@ function normalKeyboard(chatId, message) {
                 var language = i18n.__("Language") + " \uD83C\uDF0D";
                 var help = i18n.__("Help");
                 var support = i18n.__("Support") + " \u2709";
-                var team = i18n.__("My Team") + " U+26BD";
+                var team = i18n.__("My Team") + " \u26BD";
                 bot.sendMessage(chatId, message, {
                     "reply_markup": {
                         "keyboard": [
@@ -96,7 +96,7 @@ function normalKeyboard(chatId, message) {
                 var language = i18n.__("Language") + " \uD83C\uDF0D";
                 var help = i18n.__("Help");
                 var support = i18n.__("Support") + " \u2709";
-                var team = i18n.__("My Team") + " U+26BD";
+                var team = i18n.__("My Team") + " \u26BD";
                 bot.sendMessage(chatId, message, {
                     "reply_markup": {
                         "keyboard": [

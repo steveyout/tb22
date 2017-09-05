@@ -471,7 +471,7 @@ function myTeam(connection, chatId, callback) {
         if (results.length > 0) {
             var active = [];
             var inactive = [];
-            forEach(function(value, index, results) {
+            results.forEach(function(value, index, results) {
                 var sql = "select `status` from `orders` where `user` = '" + value + "'"
                 connection.query(sql, function(err, response) {
                     if (err) {
