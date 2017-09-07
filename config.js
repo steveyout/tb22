@@ -1,6 +1,6 @@
 var configuration = {
     CALLBACK: "http://solidrocks.net/v1/confirmOrder",
-    TOKEN: "331032406:AAFHJ21cq-jscPrROTUhUqA3WhgCOaIs6gU",
+    TOKEN: "412437225:AAGj2sySlrb5Ox854MVxBrf7IXciU9Ve9MM",
     API_KEY: "dsrDAYK2tv3oQkMe",
     API_SECRET: "zUDhL3EbqCZTCUZcsqxpRaMAvKVk2dYc",
     PENDING: "pending",
