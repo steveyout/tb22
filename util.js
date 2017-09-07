@@ -479,19 +479,21 @@ function myTeam(connection, chatId, callback) {
                 var user = value.chatId;
                 var sql = "select `status` from `orders` where `user` = '" + user + "'"
                 connection.query(sql, function(err, response) {
-                    if (err) {
+                    if(!nodeUtil.isNullOrUndefined(response)){
+if (err) {
                         console.log(err);
                         inactive.push(1);
                     } else {
-                        if (response[0].status === config.CONFIRMED) {
-                            active.push(1);
-                        } else {
-                            inactive.push(1);
-                        }
+                     //   if (response[0].status === config.CONFIRMED) {
+                       //     active.push(1);
+                       // } else {
+                         //   inactive.push(1);
+                       // }
                     }
                     if (index === resultsArr.length - 1) {
-                        callback(active.length, inactive.length);
+                        callback(0, 0);
                     }
+}
                 });
             });
         } else {

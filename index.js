@@ -23,7 +23,7 @@ var client = new Client({
 
 const bot = new TelegramBot(token, { polling: true });
 var chatId = null;
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 
 i18n.configure({
     locales: ['en', 'de', 'es', 'fr'],
