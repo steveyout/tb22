@@ -479,21 +479,22 @@ function myTeam(connection, chatId, callback) {
                 var user = value.chatId;
                 var sql = "select `status` from `orders` where `user` = '" + user + "'"
                 connection.query(sql, function(err, response) {
-                    if(!nodeUtil.isNullOrUndefined(response)){
-if (err) {
-                        console.log(err);
-                        inactive.push(1);
-                    } else {
-                     //   if (response[0].status === config.CONFIRMED) {
-                       //     active.push(1);
-                       // } else {
-                         //   inactive.push(1);
-                       // }
+                    if (!nodeUtil.isNullOrUndefined(response)) {
+                        if (err) {
+                            console.log(err);
+                            inactive.push(1);
+                        } else {
+                            callback(0, 0);
+                            //if (response[0].status === config.CONFIRMED) {
+                            //   active.push(1);
+                            //} else {
+                            //  inactive.push(1);
+                            // }
+                        }
+                        if (index === resultsArr.length - 1) {
+                            callback(0, 0);
+                        }
                     }
-                    if (index === resultsArr.length - 1) {
-                        callback(0, 0);
-                    }
-}
                 });
             });
         } else {
@@ -517,6 +518,18 @@ function getOrder(connection, chatId, callback) {
     });
 }
 
+function getUsers(connection, callback) {
+    var users = [];
+    var sql = "select chatId from users";
+    connection.query(sql, function(err, results) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        callback(results);
+    });
+}
+
 function Util() {
     EventEmitter.call(this);
     this.isNewUser = isNewUser;
@@ -534,6 +547,7 @@ function Util() {
     this.getLanguage = getLanguage;
     this.myTeam = myTeam;
     this.getOrder = getOrder;
+    this.getUsers = getUsers;
 }
 
 nodeUtil.inherits(Util, EventEmitter);

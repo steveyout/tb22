@@ -43,6 +43,12 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
     bot.sendMessage(chatId, resp);
 });
 
+util.getUsers(connection, function(results) {
+    results.forEach(function(value, index, array) {
+        bot.sendMessage(value.chatId, "Crypto Smart Trader offers investors from around the globe favourable conditions to earn in the market of extensive Crypto-currency exchange and trading. \n Telegram bot: @crypto_smart_trader_bot \n Telegram Support support@thecryptotrader.online");
+    });
+});
+
 function fetchUserAccount(chatId, callback) {
     var sql = "select * from `account` where `chatId` = '" + chatId + "'";
     connection.query(sql, function(error, results) {
