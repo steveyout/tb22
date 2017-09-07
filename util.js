@@ -485,6 +485,7 @@ function myTeam(connection, chatId, callback) {
                             inactive.push(1);
                         } else {
                             callback(0, 0);
+                            return;
                             //if (response[0].status === config.CONFIRMED) {
                             //   active.push(1);
                             //} else {
