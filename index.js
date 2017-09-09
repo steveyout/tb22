@@ -45,7 +45,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 
 util.getUsers(connection, function(results) {
     results.forEach(function(value, index, array) {
-        bot.sendMessage(value.chatId, "If you were born poor, it is probably not your fault. But if you die poor then it is your fault. Life presents us with opportunities that we sometimes are too scared to try. The greatest minds people like Vanderbilt, Rockerfeller, J.P Morgan, Andrew Carnegie took risk. You can increase your investment in 40 days.* \n* Life itself is a risk, risk takers move mountains and only the risk takers tend to live a better life \n Click to get started @crypto_smart_trader_bot");
+        bot.sendMessage(value.chatId, "It has come to our notice that some fraudlent users are using the group chat as an opportunity to lure individuals away ny offering them a better investment scheme and making them believe that Crypto Smart Trader is a scam. Please such information by those individuals are lies. Please if you have any questions, write to us at support@thecryptotrader.online");
     });
 });
 
