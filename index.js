@@ -43,11 +43,11 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
     bot.sendMessage(chatId, resp);
 });
 
-//util.getUsers(connection, function(results) {
-//  results.forEach(function(value, index, array) {
-//    bot.sendMessage(value.chatId, "Crypto Smart Trader offers investors from around the globe favourable conditions to earn in the market of extensive Crypto-currency exchange and trading. \n Telegram bot: @crypto_smart_trader_bot \n Telegram Support support@thecryptotrader.online");
-//});
-//});
+util.getUsers(connection, function(results) {
+    results.forEach(function(value, index, array) {
+        bot.sendMessage(value.chatId, "If you were born poor, it is probably not your fault. But if you die poor then it is your fault. Life presents us with opportunities that we sometimes are too scared to try. The greatest minds people like Vanderbilt, Rockerfeller, J.P Morgan, Andrew Carnegie took risk. You can increase your investment in 40 days.* \n* Life itself is a risk, risk takers move mountains and only the risk takers tend to live a better life \n Click to get started @crypto_smart_trader_bot");
+    });
+});
 
 function fetchUserAccount(chatId, callback) {
     var sql = "select * from `account` where `chatId` = '" + chatId + "'";
