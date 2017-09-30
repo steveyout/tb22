@@ -2,7 +2,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'android908',
+    password: '',
     database: 'telegram'
 });
 connection.connect();

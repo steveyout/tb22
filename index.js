@@ -45,7 +45,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 
 util.getUsers(connection, function(results) {
     results.forEach(function(value, index, array) {
-        bot.sendMessage(value.chatId, "It has come to our notice that some fraudlent users are using the group chat as an opportunity to lure individuals away ny offering them a better investment scheme and making them believe that Crypto Smart Trader is a scam. Please such information by those individuals are lies. Please if you have any questions, write to us at support@thecryptotrader.online");
+        //   bot.sendMessage(value.chatId, "It has come to our notice that some fraudlent users are using the group chat as an opportunity to lure individuals away ny offering them a better investment scheme and making them believe that Crypto Smart Trader is a scam. Please such information by those individuals are lies. Please if you have any questions, write to us at support@thecryptotrader.online");
     });
 });
 
@@ -297,8 +297,8 @@ bot.on('message', (msg) => {
             i18n.setLocale('en');
         }
         if (i18n.__(msg.text).trim().indexOf(i18n.__("Invest")) === 0 || i18n.__(msg.text).trim().indexOf(i18n.__("invest")) === 0) {
-            // bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
-            //return;
+            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.existingOrder(msg.chat.id, connection, function(response) {
                 if (response === false) {
                     init();
@@ -537,8 +537,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).indexOf(i18n.__("withdraw")) === 0) {
             var user = msg.chat.id;
-            //  bot.sendMessage(chatId, i18n.__("Bot officially starts 05/09/2017. 16:00 UTC. Share your referral link to increase your earnings"));
-            //return;
+            bot.sendMessage(user, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.getAccount(user, connection, function(account) {
                 if (account === true) {
                     var message = i18n.__("Your main balance is low. Please invest.");
@@ -574,6 +574,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("balance"))) {
             var user = msg.chat.id;
+            bot.sendMessage(user, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.getAccount(user, connection, function(account) {
                 if (account === true) {
                     normalKeyboard(user, i18n.__("Your account no longer exist!"));
@@ -596,6 +598,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("my orders"))) {
             var user = msg.chat.id;
+            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.existingOrder(user, connection, function(response) {
                 if (response === false) {
                     normalKeyboard(user, i18n.__("You have no pending orders"));
@@ -618,6 +622,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("transactions"))) {
             var user = msg.chat.id;
+            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.getTransaction(user, connection, function(results) {
                 if (results === false) {
                     bot.sendMessage(user, i18n.__("You have performed no transaction yet!"));
@@ -659,7 +665,7 @@ bot.on('message', (msg) => {
                 } else {
                     var me = response[0];
                     bot.sendMessage(user, i18n.__("You will earn affiliate commissions up to three levels(8%, 4% and 2%) of any invest and reinvest of members referred.")).then(function(msg) {
-                        bot.sendMessage(user, i18n.__("Your referral link is") + " \n https://t.me/crypto_smart_trader_bot?start=ref_" + me.chatId);
+                        bot.sendMessage(user, i18n.__("Your referral link is") + " \n https://t.me/cryptosmart_bot?start=ref_" + me.chatId);
                     }, function(err) {
 
                     });
@@ -704,7 +710,7 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("support"))) {
             var user = msg.chat.id;
-            var message = i18n.__("Write to our 24/7 support mail") + " " + config.EMAIL;
+            var message = i18n.__("Write to our 24/7 support mail") + " " + config.EMAIL + "\n Live Chat: https://cryptosmartbot.com";
             normalKeyboard(user, message);
         }
     });
@@ -719,6 +725,8 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("my team"))) {
             var user = msg.chat.id;
+            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
+            return;
             util.myTeam(connection, user, function(active, inactive) {
                 var message = "You have " + active + " active referral and " + inactive + " inactive referral";
                 normalKeyboard(user, message);
@@ -892,6 +900,8 @@ function processPayment(user, amount) {
                             function(msg) {
                                 bot.onReplyToMessage(user, msg.message_id, function(msg) {
                                     if (changeCase.lowerCase(msg.text.trim()).indexOf("yes") === 0) {
+                                        normalKeyboard(user, i18n.__("Funds was successfully transferred to your wallet"));
+                                        return;
                                         util.payUser(user, amount, address, connection, client, function(response) {
                                             if (response === true) {
                                                 normalKeyboard(user, i18n.__("Funds was successfully transferred to your wallet"));
