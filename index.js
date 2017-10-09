@@ -297,8 +297,6 @@ bot.on('message', (msg) => {
             i18n.setLocale('en');
         }
         if (i18n.__(msg.text).trim().indexOf(i18n.__("Invest")) === 0 || i18n.__(msg.text).trim().indexOf(i18n.__("invest")) === 0) {
-            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.existingOrder(msg.chat.id, connection, function(response) {
                 if (response === false) {
                     init();
