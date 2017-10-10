@@ -297,22 +297,19 @@ bot.on('message', (msg) => {
             i18n.setLocale('en');
         }
         if (i18n.__(msg.text).trim().indexOf(i18n.__("Invest")) === 0 || i18n.__(msg.text).trim().indexOf(i18n.__("invest")) === 0) {
+            var message = i18n.__("How much do you want to invest?");
+            var menu = i18n.__("Main menu");
+            bot.sendMessage(msg.chat.id, message, {
+                "reply_markup": {
+                    "keyboard": [
+                        ["0.01BTC", "0.02BTC"],
+                        ["0.05BTC", "0.5BTC"],
+                        ["0.1BTC", "1BTC"],
+                        [menu]
+                    ]
+                }
+            });
 
-
-            function init() {
-                var message = i18n.__("How much do you want to invest?");
-                var menu = i18n.__("Main menu");
-                bot.sendMessage(msg.chat.id, message, {
-                    "reply_markup": {
-                        "keyboard": [
-                            ["0.01BTC", "0.02BTC"],
-                            ["0.05BTC", "0.5BTC"],
-                            ["0.1BTC", "1BTC"],
-                            [menu]
-                        ]
-                    }
-                });
-            }
         }
     });
 });
