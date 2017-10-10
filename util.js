@@ -114,7 +114,7 @@ function createOrder(amount, callback_url, user, connection, callback, client) {
 }
 
 function existingOrder(user, connection, callback) {
-    connection.query("SELECT * from `orders` where `user` = '" + user + "' and `status` = '" + config.PENDING + "'",
+    connection.query("SELECT * from `orders` where `user` = '" + user + "' and `status` = '" + config.PENDING + "' order by id desc",
         function(err, results) {
             if (err) {
                 console.log(err);
@@ -123,7 +123,7 @@ function existingOrder(user, connection, callback) {
             if (results.length === 0) {
                 callback(false);
             } else if (results.length > 0) {
-                callback(results[results.length - 1]);
+                callback(results);
             }
         });
 }
