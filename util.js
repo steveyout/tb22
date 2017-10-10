@@ -123,7 +123,7 @@ function existingOrder(user, connection, callback) {
             if (results.length === 0) {
                 callback(false);
             } else if (results.length > 0) {
-                callback(results);
+                callback(results[results.length - 1]);
             }
         });
 }
