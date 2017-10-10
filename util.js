@@ -73,7 +73,7 @@ function createOrder(amount, callback_url, user, connection, callback, client) {
     existingOrder(user, connection, function(response) {
         if (response === false) {
             init();
-        } else if (response === false) {
+        } else if (response !== false) {
             init();
         }
     });
