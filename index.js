@@ -297,21 +297,7 @@ bot.on('message', (msg) => {
             i18n.setLocale('en');
         }
         if (i18n.__(msg.text).trim().indexOf(i18n.__("Invest")) === 0 || i18n.__(msg.text).trim().indexOf(i18n.__("invest")) === 0) {
-            util.existingOrder(msg.chat.id, connection, function(response) {
-                if (response === false) {
-                    init();
-                } else {
-                    bot.sendMessage(msg.chat.id, i18n.__("You have an existing order to make payment of") + " " +
-                        response[0].amount + i18n.__("BTC to bitcoin address:")).then(
-                        function(success) {
-                            bot.sendMessage(msg.chat.id, response[0].address);
-                        },
-                        function(error) {
 
-                        }
-                    );
-                }
-            });
 
             function init() {
                 var message = i18n.__("How much do you want to invest?");
@@ -319,9 +305,9 @@ bot.on('message', (msg) => {
                 bot.sendMessage(msg.chat.id, message, {
                     "reply_markup": {
                         "keyboard": [
-                            ["0.02BTC", "0.05BTC"],
-                            ["0.1BTC", "0.5BTC"],
-                            ["1BTC", "2BTC"],
+                            ["0.01BTC", "0.02BTC"],
+                            ["0.05BTC", "0.5BTC"],
+                            ["0.1BTC", "1BTC"],
                             [menu]
                         ]
                     }
@@ -330,6 +316,39 @@ bot.on('message', (msg) => {
         }
     });
 });
+
+bot.on('message', (msg) => {
+    util.getLanguage(connection, msg.chat.id, function(language) {
+        if (language !== true) {
+            i18n.setLocale(language);
+        } else {
+            i18n.setLocale('en');
+        }
+        if (changeCase.lowerCase(msg.text.trim()).indexOf("0.01btc") === 0) {
+            var message = i18n.__("Pay") + " " + msg.text + " " + i18n.__("to Bitcoin address") + " ";
+            util.createOrder(0.01, config.CALLBACK, msg.chat.id, connection, function(order) {
+                if (order === false) {
+
+                } else {
+                    bot.sendMessage(msg.chat.id, message).then(function(success) {
+                        bot.sendMessage(msg.chat.id, order.address).then(
+                            function(success) {
+                                normalKeyboard(msg.chat.id, i18n.__("Money will be on your deposit after three confirmations."));
+                            },
+                            function(err) {
+
+                            }
+                        );
+                    }, function(error) {
+
+                    });
+                }
+            }, client);
+
+        }
+    });
+});
+
 
 bot.on('message', (msg) => {
     util.getLanguage(connection, msg.chat.id, function(language) {
@@ -535,8 +554,6 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).indexOf(i18n.__("withdraw")) === 0) {
             var user = msg.chat.id;
-            bot.sendMessage(user, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.getAccount(user, connection, function(account) {
                 if (account === true) {
                     var message = i18n.__("Your main balance is low. Please invest.");
@@ -572,8 +589,6 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("balance"))) {
             var user = msg.chat.id;
-            bot.sendMessage(user, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.getAccount(user, connection, function(account) {
                 if (account === true) {
                     normalKeyboard(user, i18n.__("Your account no longer exist!"));
@@ -596,8 +611,6 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("my orders"))) {
             var user = msg.chat.id;
-            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.existingOrder(user, connection, function(response) {
                 if (response === false) {
                     normalKeyboard(user, i18n.__("You have no pending orders"));
@@ -620,8 +633,6 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("transactions"))) {
             var user = msg.chat.id;
-            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.getTransaction(user, connection, function(results) {
                 if (results === false) {
                     bot.sendMessage(user, i18n.__("You have performed no transaction yet!"));
@@ -723,8 +734,6 @@ bot.on('message', (msg) => {
         }
         if (changeCase.lowerCase(i18n.__(msg.text).trim()).includes(i18n.__("my team"))) {
             var user = msg.chat.id;
-            bot.sendMessage(msg.chat.id, i18n.__("Official launch is 09/10/2017. Share your referral link to increase your earnings"));
-            return;
             util.myTeam(connection, user, function(active, inactive) {
                 var message = "You have " + active + " active referral and " + inactive + " inactive referral";
                 normalKeyboard(user, message);
