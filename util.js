@@ -74,7 +74,7 @@ function createOrder(amount, callback_url, user, connection, callback, client) {
         if (response === false) {
             init();
         } else if (response === false) {
-            callback(false);
+            init();
         }
     });
 
