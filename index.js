@@ -45,7 +45,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 
 util.getUsers(connection, function(results) {
     results.forEach(function(value, index, array) {
-        bot.sendMessage(value.chatId, "Withdrawal is now daily. All our investors can now withdraw their profit on a daily basis. Also with the sudden rise in Bitcoin over the past few days, the bitcoin market volume has increased substantially giving investors a better opprtunity to invest.");
+        // bot.sendMessage(value.chatId, "Withdrawal is now daily. All our investors can now withdraw their profit on a daily basis. Also with the sudden rise in Bitcoin over the past few days, the bitcoin market volume has increased substantially giving investors a better opprtunity to invest.");
     });
 });
 
