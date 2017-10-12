@@ -45,7 +45,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 
 util.getUsers(connection, function(results) {
     results.forEach(function(value, index, array) {
-        //   bot.sendMessage(value.chatId, "It has come to our notice that some fraudlent users are using the group chat as an opportunity to lure individuals away ny offering them a better investment scheme and making them believe that Crypto Smart Trader is a scam. Please such information by those individuals are lies. Please if you have any questions, write to us at support@thecryptotrader.online");
+        bot.sendMessage(value.chatId, "Withdrawal is now daily. All our investors can now withdraw their profit on a daily basis. Also with the sudden rise in Bitcoin over the past few days, the bitcoin market volume has increased substantially giving investors a better opprtunity to invest.");
     });
 });
 
